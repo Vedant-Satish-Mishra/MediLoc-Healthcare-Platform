@@ -88,73 +88,73 @@ MEDILOC/
 
 ## 🏠 Home Page
 
-![Home Page](screenshots/home%20page.png)
+![Home Page](screenshot/home%20page.png)
 
 ---
 
 ## ℹ️ About Us Page
 
-![About Us](screenshots/about%20us.png)
+![About Us](screenshot/about%20us.png)
 
 ---
 
 ## 📞 Contact Us Page
 
-![Contact Us](screenshots/contact%20us.png)
+![Contact Us](screenshot/contact%20us.png)
 
 ---
 
 ## ❓ FAQ & Help Page
 
-![FAQ & Help](screenshots/faq%20and%20help.png)
+![FAQ & Help](screenshot/faq%20and%20help.png)
 
 ---
 
 ## 🔐 Login Page
 
-![Login Page](screenshots/login.png)
+![Login Page](screenshot/login.png)
 
 ---
 
 ## 👤 Customer Login
 
-![Customer Login](screenshots/customer%20login.png)
+![Customer Login](screenshot/customer%20login.png)
 
 ---
 
 ## 🏪 Owner Login
 
-![Owner Login](screenshots/owner%20login.png)
+![Owner Login](screenshot/owner%20login.png)
 
 ---
 
 ## 📝 Customer Registration
 
-![Customer Registration](screenshots/customer%20registration.png)
+![Customer Registration](screenshot/customer%20registration.png)
 
 ---
 
 ## 📝 Owner Registration
 
-![Owner Registration](screenshots/owner%20registration.png)
+![Owner Registration](screenshot/owner%20registration.png)
 
 ---
 
 ## 📊 Owner Dashboard
 
-![Owner Dashboard](screenshots/owner%20dashboard.png)
+![Owner Dashboard](screenshot/owner%20dashboard.png)
 
 ---
 
 ## 💊 Register Medicine
 
-![Register Medicine](screenshots/register%20medicine.png)
+![Register Medicine](screenshot/register%20medicine.png)
 
 ---
 
 ## 🔔 Notification Option
 
-![Notification Option](screenshots/notification%20option.png)
+![Notification Option](screenshot/notification%20option.png)
 
 ---
 
