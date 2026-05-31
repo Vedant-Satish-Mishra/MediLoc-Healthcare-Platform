@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediLoc Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    #background-image {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: blur(4px) brightness(1.05);
+    }
+    .pattern-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+      background-size: 10px 10px;
+      z-index: -1;
+    }
+    .input-field {
+      background-color: #f9fafb;
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      border-color: #6366f1;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    .role-active {
+      background-color: #4f46e5 !important;
+      color: white !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <img id="background-image" src="main_bg.jpg" alt="Background" 
+       onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/f3f4f6/374151?text=Background';">
+  <div class="pattern-overlay"></div>
+
+  <div class="min-h-screen flex flex-col items-center justify-center p-4">
+    
+    <div class="w-full max-w-2xl bg-white/25 backdrop-blur-xl rounded-2xl shadow-xl p-8 md:p-12" data-aos="zoom-in-up" data-aos-duration="600">
+      <div class="p-8 md:p-12 text-gray-800">
+        
+        <div class="flex justify-center mb-6" data-aos="zoom-in" data-aos-delay="300">
+          <a href="index.html"><img src="logo_name.png" alt="MediLoc Logo" class="w-40 h-40 "></a>
+        </div>
+
+        <h2 class="text-center text-3xl font-bold mb-2 text-gray-900" data-aos="fade-up" data-aos-delay="400">Welcome to MediLoc</h2>
+        <p class="text-center text-gray-600 mb-8" data-aos="fade-up" data-aos-delay="500">Choose your role & sign in</p>
+
+        <div class="grid grid-cols-2 gap-4 mb-6" data-aos="fade-up" data-aos-delay="600">
+          <button type="button" id="customerBtn" 
+                  class="w-full bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition hover:scale-105">
+            Customer
+          </button>
+          <button type="button" id="ownerBtn" 
+                  class="w-full bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition hover:scale-105">
+            Owner
+          </button>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <input type="hidden" name="role" id="role" value="">
+
+          <div data-aos="fade-up" data-aos-delay="700">
+            <input type="email" id="email" name="email" placeholder="Email Address" required 
+                   class="w-full px-4 py-3 rounded-lg input-field">
+          </div>
+          <div data-aos="fade-up" data-aos-delay="800">
+            <input type="password" id="password" name="password" placeholder="Password" required 
+                   class="w-full px-4 py-3 rounded-lg input-field">
+          </div>
+
+          <button type="submit" 
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition hover:scale-105" data-aos="fade-up" data-aos-delay="900">
+            Login
+          </button>
+        </form>
+
+        <div class="text-center mt-6" data-aos="fade-in" data-aos-delay="1000">
+          <p class="text-gray-500">
+            Don’t have an account?
+            <a href="registration.html" class="font-semibold text-indigo-600 hover:underline">Register</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-8">
+      <p class="text-gray-500 text-sm">Powered by MediLoc</p>
+    </footer>
+  </div>
+
+<script>
+    const customerBtn = document.getElementById("customerBtn");
+    const ownerBtn = document.getElementById("ownerBtn");
+    const roleInput = document.getElementById("role");
+    const loginForm = document.getElementById("loginForm");
+
+    customerBtn.addEventListener("click", () => {
+      roleInput.value = "Customer";
+      customerBtn.classList.add("role-active");
+      ownerBtn.classList.remove("role-active");
+    });
+
+    ownerBtn.addEventListener("click", () => {
+      roleInput.value = "Owner";
+      ownerBtn.classList.add("role-active");
+      customerBtn.classList.remove("role-active");
+    });
+
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        if (!roleInput.value) {
+            alert("Please select a role: Customer or Owner");
+            return;
+        }
+
+        const formData = new FormData(loginForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if(response.ok) {
+                // Save user info to session storage
+                sessionStorage.setItem('loggedInUser', JSON.stringify(result.user));
+                
+                // Redirect based on role
+                if (result.user.role === 'owner') {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } else {
+                alert(`❌ Login Failed: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Login Error:', error);
+            alert('❌ An error occurred. Please try again.');
+        }
+    });
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-sine',
+      mirror: true,
+      offset: 100,
+    });
+</script>
+</body>
+</html>
