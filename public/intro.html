@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro Video Redirect</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: black; }
+    #introVideo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  </style>
+</head>
+<body>
+    
+  <video id="introVideo" playsinline muted autoplay loop>
+    <source src="intro.mp4" type="video/mp4">
+    <source src="intro.webm" type="video/webm">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    const video = document.getElementById('introVideo');
+
+    // Wait until video metadata is loaded
+    video.addEventListener('loadeddata', () => {
+      video.play().catch(() => {
+        video.muted = false;
+        video.play();
+      });
+    });
+
+    // Redirect when video ends (remove loop for final redirect)
+    video.loop = false;
+    video.addEventListener('ended', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediLoc - Owner Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F3F4F6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      mix-blend-mode: multiply;
+      animation: float 6s ease-in-out infinite;
+    }
+    .bg-circle:nth-child(1) {
+      width: 320px;
+      height: 320px;
+      background: rgba(14, 159, 110, 0.15);
+      top: -160px;
+      right: -160px;
+      animation-delay: 0s;
+    }
+    .bg-circle:nth-child(2) {
+      width: 320px;
+      height: 320px;
+      background: rgba(249, 168, 37, 0.15);
+      bottom: -160px;
+      left: -160px;
+      animation-delay: -3s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(20px, -20px) scale(1.1); }
+    }
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 280px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid #E5E7EB;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+    .logo {
+      padding: 24px;
+      border-bottom: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0E9F6E, #F9A825);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .logo-icon:hover {
+      transform: scale(1.1);
+    }
+    .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #0E9F6E, #1F2937);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav {
+      padding: 16px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+      color: #374151;
+      font-weight: 500;
+    }
+    .nav-item:hover {
+      background: #E5E7EB;
+      transform: scale(1.03);
+    }
+    .nav-item.active {
+      background: #0E9F6E;
+      color: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(14, 159, 110, 0.3);
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #E5E7EB;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1F2937;
+      margin-bottom: 4px;
+    }
+    .header-title h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #6B7280;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .search-box {
+      position: relative;
+    }
+    .search-box input {
+      padding: 10px 12px 10px 40px;
+      border: 1px solid #D1D5DB;
+      border-radius: 12px;
+      background: #FFFFFF;
+      width: 280px;
+      transition: all 0.3s ease;
+      outline: none;
+      color: #1F2937;
+    }
+    .search-box input:focus {
+      border-color: #0E9F6E;
+      box-shadow: 0 0 0 3px rgba(14, 159, 110, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6B7280;
+    }
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      color: #6B7280;
+    }
+    .icon-button:hover {
+      background: #E5E7EB;
+    }
+    .notification-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0E9F6E, #F9A825);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .user-avatar:hover {
+      transform: scale(1.1);
+    }
+    .content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+    .stats-section {
+      margin-bottom: 32px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1F2937;
+    }
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0E9F6E;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .add-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(14, 159, 110, 0.3);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .stat-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+    .stat-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .stat-icon.green { background: #0E9F6E; }
+    .stat-icon.yellow { background: #F9A825; }
+    .stat-icon.blue { background: #3B82F6; }
+    .stat-trend {
+      background: #E7F7F1;
+      color: #0E9F6E;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .stat-title {
+      color: #6B7280;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1F2937;
+    }
+    .inventory-table {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      background: #F9FAFB;
+      padding: 16px 24px;
+      text-align: left;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid #E5E7EB;
+      vertical-align: middle;
+    }
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    .table tr:hover {
+      background: #F9FAFB;
+    }
+    .medicine-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .medicine-icon {
+      width: 40px;
+      height: 40px;
+      background: #E7F7F1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0E9F6E;
+    }
+    .medicine-details .name {
+      font-weight: 600;
+      color: #1F2937;
+    }
+    .medicine-details .category {
+      font-size: 12px;
+      color: #6B7280;
+    }
+    .price {
+      font-weight: 600;
+      color: #1F2937;
+    }
+    .discount-badge {
+      background: #FEF6E9;
+      color: #F9A825;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .stock {
+      font-weight: 600;
+    }
+    .low-stock {
+      color: #D97706;
+    }
+    .low-stock-badge {
+      background: #FEF6E9;
+      color: #D97706;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+    .delete-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+    .stock-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stock-input {
+      width: 60px;
+      text-align: center;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      padding: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      background: #F9FAFB;
+      color: #1F2937;
+    }
+    .stock-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #D1D5DB;
+      background: #F9FAFB;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      color: #374151;
+    }
+    .stock-btn:hover {
+      background: #E5E7EB;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 16px;
+      padding: 32px;
+      width: 90%;
+      max-width: 500px;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.show .modal {
+      transform: translateY(0) scale(1);
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1F2937;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #D1D5DB;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      outline: none;
+      background: #FFFFFF;
+      color: #1F2937;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: #0E9F6E;
+      box-shadow: 0 0 0 3px rgba(14, 159, 110, 0.2);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background: #0E9F6E;
+      color: #FFFFFF;
+    }
+    .btn-primary:hover {
+      transform: scale(1.03);
+    }
+    .btn-secondary {
+      background: #F3F4F6;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #E5E7EB;
+    }
+    .notifications-dropdown {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      width: 320px;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid #E5E7EB;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+    .notifications-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .notifications-header {
+      padding: 16px;
+      border-bottom: 1px solid #E5E7EB;
+      font-weight: 600;
+      color: #1F2937;
+    }
+    .notification-item {
+      padding: 16px;
+      border-bottom: 1px solid #E5E7EB;
+      transition: background 0.3s ease;
+    }
+    .notification-item:hover {
+      background: #F9FAFB;
+    }
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+    .notification-message {
+      font-size: 14px;
+      color: #1F2937;
+      margin-bottom: 4px;
+    }
+    .notification-time {
+      font-size: 12px;
+      color: #6B7280;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: fixed;
+        z-index: 1000;
+        height: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .burger-menu {
+        display: block;
+        z-index: 1001;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .header-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+    }
+    @media (min-width: 769px) {
+      .burger-menu {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Shield Check -->
+  <script>
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+      window.location.href = 'login.html';
+    } else {
+      const user = JSON.parse(loggedInUser);
+      if (user.role !== 'owner') {
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+
+  <div class="bg-animation">
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+  </div>
+
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="logo">
+        <div class="logo-icon" onclick="window.location.href='index.html'">
+          <i data-feather="activity"></i>
+        </div>
+        <div class="logo-text">MediLoc</div>
+      </div>
+      <nav class="nav">
+        <div class="nav-item active" onclick="window.location.reload()">
+          <i data-feather="bar-chart-2"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='index.html'">
+          <i data-feather="home"></i>
+          <span>Home View</span>
+        </div>
+        <div class="nav-item" id="logoutBtn">
+          <i data-feather="log-out"></i>
+          <span>Logout</span>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <button class="icon-button burger-menu" id="burgerBtn">
+          <i data-feather="menu"></i>
+        </button>
+        <div class="header-title">
+          <h1>Welcome</h1>
+          <h2 id="ownerShopName">Owner Dashboard</h2>
+        </div>
+        <div class="header-actions">
+          <div class="search-box">
+            <i data-feather="search" class="search-icon"></i>
+            <input type="text" placeholder="Search medicines..." id="dashboardSearchInput">
+          </div>
+          <div class="icon-button" id="notificationBtn">
+            <i data-feather="bell"></i>
+            <div class="notification-badge" id="notificationBadge">1</div>
+            <div class="notifications-dropdown" id="notificationsDropdown">
+              <div class="notifications-header">Notifications</div>
+              <div class="notification-item">
+                <div class="notification-message" id="notifMessage">Welcome to your database dashboard!</div>
+                <div class="notification-time">Just now</div>
+              </div>
+            </div>
+          </div>
+          <div class="user-avatar" id="ownerAvatar">O</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- Quick Stats -->
+        <section class="stats-section">
+          <div class="section-header">
+            <h3 class="section-title">Quick Stats</h3>
+            <button class="add-btn" id="addMedicineBtn">
+              <i data-feather="plus"></i>
+              <span>Add Medicine</span>
+            </button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon green">
+                  <i data-feather="package"></i>
+                </div>
+              </div>
+              <div class="stat-title">Active Medicines</div>
+              <div class="stat-value" id="medicinesCount">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon yellow">
+                  <i data-feather="trending-up"></i>
+                </div>
+              </div>
+              <div class="stat-title">Average Price</div>
+              <div class="stat-value" id="averagePrice">₹0.00</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon blue">
+                  <i data-feather="alert-triangle"></i>
+                </div>
+              </div>
+              <div class="stat-title">Low Stock Items (&lt; 20)</div>
+              <div class="stat-value" id="lowStockCount">0</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Inventory List -->
+        <section class="inventory-section">
+          <div class="section-header">
+            <h3 class="section-title">Inventory List</h3>
+          </div>
+          <div class="inventory-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Medicine / Category</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Stock Quantity</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody">
+                <tr>
+                  <td colspan="5" class="text-center p-8 text-gray-500">Loading medicines...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Medicine Modal -->
+  <div class="modal-overlay" id="addMedicineModal">
+    <div class="modal">
+      <h3 class="modal-title">Add New Medicine</h3>
+      <form id="addMedicineForm">
+        <div class="form-group">
+          <label class="form-label" for="medName">Medicine Name</label>
+          <input class="form-input" type="text" id="medName" required placeholder="e.g. Paracetamol 500mg">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="medCategory">Category</label>
+          <select class="form-select" id="medCategory" required>
+            <option value="Painkiller">Painkiller</option>
+            <option value="Antibiotic">Antibiotic</option>
+            <option value="Vitamin">Vitamin</option>
+            <option value="Supplement">Supplement</option>
+            <option value="Cold & Flu">Cold & Flu</option>
+            <option value="First Aid">First Aid</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="medPrice">Price (₹)</label>
+            <input class="form-input" type="number" id="medPrice" required step="0.01" min="0" placeholder="e.g. 50">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="medStock">Stock Quantity</label>
+            <input class="form-input" type="number" id="medStock" required min="0" placeholder="e.g. 100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="medDiscount">Discount (%)</label>
+          <input class="form-input" type="number" id="medDiscount" min="0" max="100" placeholder="e.g. 10" value="0">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Medicine</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initialize feather icons
+    feather.replace();
+
+    // Owner Data from Session Storage
+    const currentUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    document.getElementById('ownerAvatar').textContent = currentUser.fullname[0].toUpperCase();
+    document.getElementById('ownerShopName').textContent = `${currentUser.fullname}'s Pharmacy Dashboard`;
+
+    // State Variables
+    let medicines = [];
+
+    // Selectors
+    const tableBody = document.getElementById('inventoryTableBody');
+    const dashboardSearchInput = document.getElementById('dashboardSearchInput');
+    const burgerBtn = document.getElementById('burgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const addMedicineBtn = document.getElementById('addMedicineBtn');
+    const addMedicineModal = document.getElementById('addMedicineModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const addMedicineForm = document.getElementById('addMedicineForm');
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Sidebar toggle for mobile
+    burgerBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Close sidebar if clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        if (!sidebar.contains(e.target) && !burgerBtn.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      }
+    });
+
+    // Modal Actions
+    addMedicineBtn.addEventListener('click', () => {
+      addMedicineModal.classList.add('show');
+    });
+    cancelBtn.addEventListener('click', () => {
+      addMedicineModal.classList.remove('show');
+    });
+    addMedicineModal.addEventListener('click', (e) => {
+      if (e.target === addMedicineModal) {
+        addMedicineModal.classList.remove('show');
+      }
+    });
+
+    // Notifications Dropdown
+    notificationBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notificationsDropdown.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (notificationsDropdown && !notificationsDropdown.contains(e.target) && !notificationBtn.contains(e.target)) {
+        notificationsDropdown.classList.remove('show');
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('loggedInUser');
+      window.location.href = 'login.html';
+    });
+
+    // Fetch Medicines from Backend Database
+    async function fetchMedicines() {
+      try {
+        const response = await fetch(`/api/medicines/owner?userId=${currentUser.id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch medicines');
+        }
+        medicines = await response.json();
+        renderTable();
+        updateStats();
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-8 text-red-500">❌ Error loading inventory from server.</td></tr>`;
+      }
+    }
+
+    // Render Inventory Table
+    function renderTable() {
+      const query = dashboardSearchInput.value.toLowerCase().trim();
+      const filtered = medicines.filter(m => m.name.toLowerCase().includes(query));
+
+      tableBody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-8 text-gray-500">No medicines found.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        const lowStockClass = item.stock < 20 ? 'low-stock' : '';
+        const lowStockBadge = item.stock < 20 ? '<span class="low-stock-badge">LOW</span>' : '';
+        const discountBadge = item.discount > 0 ? `<span class="discount-badge">${item.discount}% OFF</span>` : '-';
+
+        tr.innerHTML = `
+          <td>
+            <div class="medicine-info">
+              <div class="medicine-icon"><i data-feather="shield"></i></div>
+              <div class="medicine-details">
+                <div class="name">${escapeHTML(item.name)}</div>
+                <div class="category">${escapeHTML(item.category)}</div>
+              </div>
+            </div>
+          </td>
+          <td class="price">₹${parseFloat(item.price).toFixed(2)}</td>
+          <td>${discountBadge}</td>
+          <td class="stock ${lowStockClass}">
+            <div class="stock-control">
+              <button class="stock-btn minus-btn" data-id="${item.id}">-</button>
+              <input type="number" class="stock-input" value="${item.stock}" min="0" data-id="${item.id}">
+              <button class="stock-btn plus-btn" data-id="${item.id}">+</button>
+              ${lowStockBadge}
+            </div>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="action-btn delete-btn" data-id="${item.id}"><i data-feather="trash-2" style="width:16px; height:16px;"></i></button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      feather.replace();
+    }
+
+    // Update Stats cards
+    function updateStats() {
+      document.getElementById('medicinesCount').textContent = medicines.length;
+      
+      const totalVal = medicines.reduce((sum, item) => sum + parseFloat(item.price), 0);
+      const avg = medicines.length > 0 ? totalVal / medicines.length : 0;
+      document.getElementById('averagePrice').textContent = `₹${avg.toFixed(2)}`;
+
+      const lowStockCount = medicines.filter(m => m.stock < 20).length;
+      document.getElementById('lowStockCount').textContent = lowStockCount;
+
+      // Update notifications badge if there are low stock items
+      const badge = document.getElementById('notificationBadge');
+      const msg = document.getElementById('notifMessage');
+      if (lowStockCount > 0) {
+        badge.textContent = lowStockCount;
+        badge.classList.remove('hidden');
+        msg.innerHTML = `Warning: <b>${lowStockCount}</b> medicine(s) are low in stock!`;
+      } else {
+        badge.classList.add('hidden');
+        msg.textContent = "Your inventory levels are healthy.";
+      }
+    }
+
+    // Event Delegation for Table Controls (Stock Update & Delete)
+    tableBody.addEventListener('click', async (e) => {
+      const target = e.target;
+      const plusBtn = target.closest('.plus-btn');
+      const minusBtn = target.closest('.minus-btn');
+      const deleteBtn = target.closest('.delete-btn');
+
+      if (plusBtn || minusBtn) {
+        const btn = plusBtn || minusBtn;
+        const id = btn.dataset.id;
+        const item = medicines.find(m => m.id == id);
+        if (!item) return;
+
+        let newStock = item.stock;
+        if (plusBtn) newStock++;
+        else newStock = Math.max(0, newStock - 1);
+
+        await updateStockOnServer(id, newStock);
+      }
+
+      if (deleteBtn) {
+        const id = deleteBtn.dataset.id;
+        if (confirm('Are you sure you want to delete this medicine?')) {
+          await deleteMedicineOnServer(id);
+        }
+      }
+    });
+
+    tableBody.addEventListener('change', async (e) => {
+      const input = e.target.closest('.stock-input');
+      if (input) {
+        const id = input.dataset.id;
+        let val = parseInt(input.value);
+        if (isNaN(val) || val < 0) val = 0;
+        await updateStockOnServer(id, val);
+      }
+    });
+
+    // Update Stock API Call
+    async function updateStockOnServer(id, newStock) {
+      try {
+        const response = await fetch(`/api/medicines/owner/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stock: newStock, userId: currentUser.id })
+        });
+        const result = await response.json();
+        if (response.ok) {
+          // Update local state and rerender
+          const idx = medicines.findIndex(m => m.id == id);
+          if (idx !== -1) {
+            medicines[idx].stock = newStock;
+            renderTable();
+            updateStats();
+          }
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Update stock error:', error);
+        alert('Server error updating stock.');
+      }
+    }
+
+    // Delete Medicine API Call
+    async function deleteMedicineOnServer(id) {
+      try {
+        const response = await fetch(`/api/medicines/owner/${id}?userId=${currentUser.id}`, {
+          method: 'DELETE'
+        });
+        const result = await response.json();
+        if (response.ok) {
+          medicines = medicines.filter(m => m.id != id);
+          renderTable();
+          updateStats();
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('Server error deleting medicine.');
+      }
+    }
+
+    // Add Medicine API Call
+    addMedicineForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('medName').value.trim();
+      const category = document.getElementById('medCategory').value;
+      const price = parseFloat(document.getElementById('medPrice').value);
+      const stock = parseInt(document.getElementById('medStock').value);
+      const discount = parseInt(document.getElementById('medDiscount').value) || 0;
+
+      try {
+        const response = await fetch('/api/medicines/owner', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, category, price, stock, discount, userId: currentUser.id })
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+          alert('✅ Medicine added successfully!');
+          addMedicineForm.reset();
+          addMedicineModal.classList.remove('show');
+          fetchMedicines(); // Refresh inventory list
+        } else {
+          alert('❌ Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Add medicine error:', error);
+        alert('Server error adding medicine.');
+      }
+    });
+
+    // Search input typing filter
+    dashboardSearchInput.addEventListener('input', renderTable);
+
+    // Escape HTML helper
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
+    // Load Initial Data
+    fetchMedicines();
+  </script>
+</body>
+</html>

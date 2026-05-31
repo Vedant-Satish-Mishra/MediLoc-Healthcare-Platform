@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Store Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    #background-image {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        object-fit: cover; /* Cover the entire area */
+        z-index: -1; /* Place it behind all other content */
+        filter: blur(1px) brightness(1.05); /* Adjusted for a light theme */
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('main_bg.png');">
+
+    <img id="background-image" src="main_bg.jpg" alt="Abstract background" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/1a202c/ffffff?text=Background';">
+    <div class="pattern-overlay"></div>
+    
+  <div class="bg-white/25 backdrop-blur-xl rounded-3xl shadow-xl w-full max-w-6xl overflow-hidden">
+    
+    <header class="flex flex-wrap items-center justify-between gap-y-2 px-4 py-4 sm:px-6 border-b border-gray-200" data-aos="fade-down">
+  <div class="flex items-center gap-3">
+    <img src="logo_2.png" alt="Logo" class="h-10 w-27">
+  </div>
+  <div id="auth-links" class="space-x-4">
+    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+    <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+    <a href="#faq" class="text-gray-700 hover:text-blue-600">FAQ</a>
+    <a href="login.html" class="px-4 py-1 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition">Login</a>
+    <a href="registration.html" class="px-4 py-1 rounded-full text-white bg-blue-600 hover:bg-blue-700 transition">Register</a>
+  </div>
+</header>
+
+    <div class="text-center py-6 px-4 sm:px-6">
+  <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-800" data-aos="fade-up">MediLoc</h2>
+  
+  <div class="relative max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+    <!-- Search Input -->
+    <input id="searchInput" type="text" placeholder="Search for Medicines, Vitamins & more..." class="w-full px-5 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    
+    <!-- Search Button -->
+    <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Medicine Search Results -->
+  <div id="results" class="mt-6 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+</div>
+
+
+    <div class="flex flex-col lg:flex-row px-4 sm:px-6 pb-6 gap-6">
+      
+      <aside class="w-full lg:w-64 bg-white/80 rounded-xl shadow p-4 flex-shrink-0" data-aos="fade-right">
+        <h3 class="font-semibold mb-3 text-gray-800">Categories</h3>
+        <ul class="space-y-2 text-gray-700">
+          <li class="hover:text-blue-600 cursor-pointer">Vitamins & Supplements</li>
+          <li class="hover:text-blue-600 cursor-pointer">First Aid</li>
+          <li class="hover:text-blue-600 cursor-pointer">Pain Relief</li>
+          <li class="hover:text-blue-600 cursor-pointer">Cold & Flu</li>
+          <li class="hover:text-blue-600 cursor-pointer">Digestive Health</li>
+          <li class="hover:text-blue-600 cursor-pointer">Skin Care</li>
+          <li class="hover:text-blue-600 cursor-pointer">Personal Care</li>
+          <li class="hover:text-blue-600 cursor-pointer">Baby & Child Care</li>
+          <li class="hover:text-blue-600 cursor-pointer">Medical Devices</li>
+          <li class="hover:text-blue-600 cursor-pointer">Prescriptions</li>
+        </ul>
+      </aside>
+
+      <main class="flex-1">
+        <h3 class="font-semibold mb-4 text-gray-800" data-aos="fade-left">Featured Products</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+            <img src="p1.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Blue & White Capsules</p>
+            <p class="text-xs text-gray-500">General wellness tablets</p>
+          </div>
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+            <img src="p2.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Melcal Box</p>
+            <p class="text-xs text-gray-500">Mineral supplement</p>
+          </div>
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="300">
+            <img src="p3.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Green & Yellow Pills</p>
+            <p class="text-xs text-gray-500">Multivitamin tablets</p>
+          </div>
+        </div>
+
+        <h3 class="font-semibold mt-8 mb-4 text-gray-800" data-aos="fade-left">Top Selling</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+            <img src="p4.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Capsule Bottle</p>
+            <p class="text-xs text-gray-500">Pain relief capsules</p>
+          </div>
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+            <img src="p5.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Orange Capsules</p>
+            <p class="text-xs text-gray-500">Immunity booster</p>
+          </div>
+          <div class="bg-white rounded-xl shadow p-4 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="300">
+            <img src="p6.png" class="mx-auto mb-2 h-24 object-contain" alt="Product">
+            <p class="font-semibold text-gray-800">Purple & Pink Pills</p>
+            <p class="text-xs text-gray-500">Allergy medication</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <section id="about" class="px-6 py-12 bg-white/80">
+  <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center" data-aos="fade-up">🌐 About Us</h2>
+
+  <div class="text-center max-w-3xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">
+    <h3 class="text-xl font-semibold text-blue-700">MediLoc</h3>
+    <p class="italic text-gray-600">“Your Health, Just Around the Corner.”</p>
+    <p class="mt-4 text-gray-700">
+      MediLoc is a digital platform designed to make healthcare access faster, easier, 
+      and more reliable by helping patients find medicines at nearby pharmacies instantly.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-10">
+    <div class="bg-white shadow-md rounded-lg p-6 text-center hover:shadow-xl transition" data-aos="zoom-in">
+      <div class="text-blue-600 text-4xl mb-3">🎯</div>
+      <h4 class="font-semibold text-lg mb-2">Our Mission</h4>
+      <p class="text-gray-700">
+        To make healthcare access faster, easier, and more reliable by 
+        connecting people with nearby pharmacies and medical stores.
+      </p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-6 text-center hover:shadow-xl transition" data-aos="zoom-in" data-aos-delay="100">
+      <div class="text-green-600 text-4xl mb-3">👁️</div>
+      <h4 class="font-semibold text-lg mb-2">Our Vision</h4>
+      <p class="text-gray-700">
+        To become India’s most trusted digital health locator platform, 
+        ensuring no patient struggles to find medicines when they need them the most.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8 items-start mb-10">
+    <div data-aos="fade-right">
+      <h4 class="text-xl font-semibold text-gray-800 mb-3">📖 Our Story</h4>
+      <p class="text-gray-700">
+        MediLoc started as a simple idea during an engineering project: 
+        <em>“What if patients could instantly locate medicines at nearby pharmacies instead of wasting time searching?”</em>  
+        With that thought, we built MediLoc – a smart platform bridging the gap between patients and pharmacies using technology.
+      </p>
+    </div>
+
+    <div data-aos="fade-left">
+      <h4 class="text-xl font-semibold text-gray-800 mb-3">💡 Core Values</h4>
+      <ul class="list-disc pl-5 space-y-1 text-gray-700">
+        <li><strong>Trust</strong> – Reliability in every service</li>
+        <li><strong>Innovation</strong> – Leveraging technology for better healthcare</li>
+        <li><strong>Customer-First</strong> – Prioritizing patient needs</li>
+        <li><strong>Transparency</strong> – Honest & open information</li>
+        <li><strong>Accessibility</strong> – Easy healthcare for all</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mb-10">
+    <h4 class="text-xl font-semibold text-gray-800 mb-4 text-center" data-aos="fade-up">👥 Our Team</h4>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+      <div class="bg-white shadow rounded-lg p-4 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-2xl">🧑‍💻</div>
+        <h5 class="mt-3 font-semibold">Vedant</h5>
+        <p class="text-gray-600 text-sm">Founder & Project Lead</p>
+      </div>
+      <div class="bg-white shadow rounded-lg p-4 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-2xl">💻</div>
+        <h5 class="mt-3 font-semibold">[Teammate]</h5>
+        <p class="text-gray-600 text-sm">Technical Head (CTO)</p>
+      </div>
+      <div class="bg-white shadow rounded-lg p-4 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-2xl">🎨</div>
+        <h5 class="mt-3 font-semibold">[Teammate]</h5>
+        <p class="text-gray-600 text-sm">Design & UI Lead</p>
+      </div>
+      <div class="bg-white shadow rounded-lg p-4 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="400">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center text-2xl">📢</div>
+        <h5 class="mt-3 font-semibold">[Teammate]</h5>
+        <p class="text-gray-600 text-sm">Marketing & Outreach</p>
+      </div>
+    </div>
+  </div>
+
+  <div data-aos="fade-up">
+    <h4 class="text-xl font-semibold text-gray-800 mb-4 text-center">🏆 Achievements</h4>
+    <div class="space-y-3 max-w-2xl mx-auto">
+      <div class="flex items-start gap-3">
+        <span class="text-blue-600">✔</span>
+        <p class="text-gray-700">Selected as a Mini-Project in Engineering Program</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="text-blue-600">✔</span>
+        <p class="text-gray-700">Developed real-time pharmacy locator prototype</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="text-blue-600">✔</span>
+        <p class="text-gray-700">Built search + filter + map integration demo</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="text-blue-600">✔</span>
+        <p class="text-gray-700">Moving towards a scalable health-tech platform</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="contact" class="py-16 px-6 lg:px-20">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+        
+        <div class="space-y-8" data-aos="fade-right">
+          <h2 class="text-4xl font-bold text-gray-800">Get in Touch</h2>
+          <p class="text-gray-600 text-lg">
+            Have questions or want to work with us? Fill the form or use the contact details below.
+          </p>
+
+          <div class="space-y-5">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-blue-500 text-white rounded-full shadow">
+                📧
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-gray-700">Email</h3>
+                <p class="text-gray-600">support@example.com</p>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-green-500 text-white rounded-full shadow">
+                📞
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-gray-700">Phone</h3>
+                <p class="text-gray-600">+91 98765 43210</p>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full shadow">
+                📍
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-gray-700">Address</h3>
+                <p class="text-gray-600">123, Business Street, Nagpur, India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-left">
+          <h3 class="text-2xl font-bold mb-6 text-gray-800">Send us a Message</h3>
+          <form action="#" method="POST" class="space-y-5">
+            <div>
+              <label class="block text-gray-700 font-medium">Name</label>
+              <input type="text" class="w-full mt-2 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Your Name" required>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium">Email</label>
+              <input type="email" class="w-full mt-2 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Your Email" required>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium">Subject</label>
+              <input type="text" class="w-full mt-2 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Message Subject" required>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium">Message</label>
+              <textarea rows="5" class="w-full mt-2 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Write your message..." required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Send Message</button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="mt-16" data-aos="fade-up">
+        <iframe class="w-full h-96 rounded-2xl shadow-lg"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.652591786079!2d79.08815421493286!3d21.145800285930257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4c0f2542ec5d1%3A0x1234567890abcdef!2sNagpur!5e0!3m2!1sen!2sin!4v1676459823859"
+          allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </section>
+    
+    <section id="faq" class="px-6 py-10 bg-white/80">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center" data-aos="fade-up">❓ FAQ / Help</h2>
+  
+  <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+    
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @HealthSeeker01</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        1. What services does MediLoc provide?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">MediLoc helps you find medicines and nearby pharmacies quickly and easily.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @Ankita_Pharm</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        2. How can I contact support?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">You can reach us via email at <b>support@mediloc.com</b> or call us at +91-9876543210.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @TechieRaj</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        3. What is your response time?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">We usually reply within 24 hours during working days.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @PharmaGuru</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        4. Do you offer refunds/returns?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">MediLoc itself does not sell medicines; refunds/returns depend on the respective pharmacy.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @Neha_Cares</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        5. How do I track my order/project status?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">Currently, MediLoc provides medicine locator services only. Ordering & delivery will be part of future updates.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @LocalMedic</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        6. Where are you located?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">We are based in Amravati, Maharashtra, India.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @PartnerClinic</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        7. Do you collaborate/partner with others?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">Yes, we aim to partner with pharmacies, hospitals, and medical suppliers to improve accessibility.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @DataSafe</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        8. How secure is my data with you?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">Your personal information is encrypted and never shared with third parties.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @FutureIntern</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        9. How can I join your team?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">We welcome passionate innovators! You can apply by contacting us at <b>hr@mediloc.com</b>.</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <p class="text-sm text-gray-500 mb-1">👤 @PaySmart</p>
+      <button class="w-full flex justify-between items-center text-left font-semibold text-gray-800 focus:outline-none toggle-faq">
+        10. What payment methods do you accept?
+        <span class="text-blue-600">+</span>
+      </button>
+      <p class="hidden text-gray-600 mt-2">Currently, MediLoc does not process payments. Future versions will support UPI, Credit/Debit Cards, and Net Banking.</p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".toggle-faq").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const answer = btn.nextElementSibling;
+      const symbol = btn.querySelector("span");
+      answer.classList.toggle("hidden");
+      symbol.textContent = answer.classList.contains("hidden") ? "+" : "-";
+    });
+  });
+</script>
+
+
+  </div>
+  
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600,         // Makes animations slightly faster and smoother
+      easing: 'ease-out-sine', // A smoother easing function
+      mirror: true,          // This makes animations trigger every time you scroll
+      offset: 100,           // Triggers animation a little sooner for a better feel
+    });
+  </script>
+
+  <script>
+  // Sample medicine data
+  const searchInput = document.getElementById("searchInput");
+  const resultsDiv = document.getElementById("results");
+
+  let debounceTimer;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const query = searchInput.value.trim();
+      resultsDiv.innerHTML = "";
+
+      if (!query) return;
+
+      try {
+        const response = await fetch(`/api/medicines?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        if (data.length === 0) {
+          resultsDiv.innerHTML = `<p class="text-gray-700 text-center col-span-full font-semibold p-4">No results found</p>`;
+          return;
+        }
+
+        data.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "bg-white/75 backdrop-blur-lg rounded-xl shadow-lg p-5 text-left hover:shadow-2xl transition duration-300 border border-gray-100 flex flex-col justify-between";
+          card.setAttribute("data-aos", "fade-up");
+
+          const priceNum = parseFloat(item.price);
+          const discountInfo = item.discount > 0 
+            ? `<span class="bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded text-xs ml-2">${item.discount}% OFF</span>` 
+            : '';
+
+          card.innerHTML = `
+            <div>
+              <div class="h-20 w-20 flex items-center justify-center bg-emerald-50 rounded-xl mb-4">
+                <span class="text-3xl text-emerald-600">💊</span>
+              </div>
+              <h2 class="text-lg font-bold text-gray-900 flex items-center flex-wrap gap-1">${escapeHTML(item.name)} ${discountInfo}</h2>
+              <p class="text-gray-500 text-xs mt-1">Category: <span class="font-medium text-gray-700">${escapeHTML(item.category)}</span></p>
+              
+              <div class="mt-3 space-y-1">
+                <p class="text-gray-700 text-sm"><strong>Shop:</strong> ${escapeHTML(item.shop_name)}</p>
+                <p class="text-gray-700 text-sm"><strong>Price:</strong> <span class="font-bold text-lg text-emerald-600">₹${priceNum.toFixed(2)}</span></p>
+                <p class="text-gray-700 text-sm"><strong>Stock:</strong> ${item.stock > 0 ? `<span class="text-emerald-700">${item.stock} units available</span>` : '<span class="text-red-500 font-semibold">Out of Stock</span>'}</p>
+              </div>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-gray-100 space-y-1 text-xs text-gray-500">
+              <p><strong>Pharmacy Address:</strong> ${escapeHTML(item.shop_address)} (${escapeHTML(item.shop_pincode)})</p>
+              <p><strong>Contact Shop:</strong> <span class="font-semibold text-gray-700">${escapeHTML(item.owner_phone)}</span></p>
+            </div>
+          `;
+          resultsDiv.appendChild(card);
+        });
+
+        AOS.refresh();
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        resultsDiv.innerHTML = `<p class="text-red-600 text-center col-span-full">Error querying database. Ensure backend server is running.</p>`;
+      }
+    }, 300);
+  });
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const authLinksContainer = document.getElementById('auth-links');
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+
+    if (loggedInUser) {
+      const user = JSON.parse(loggedInUser);
+      let dashboardBtn = '';
+      if (user.role === 'owner') {
+        dashboardBtn = `<a href="dashboard.html" class="px-4 py-1.5 rounded-full text-white bg-emerald-600 hover:bg-emerald-700 transition font-semibold text-sm">Go to Dashboard</a>`;
+      }
+
+      authLinksContainer.innerHTML = `
+        ${dashboardBtn}
+        <span class="text-gray-800 font-semibold ml-2">Welcome, ${escapeHTML(user.fullname)}!</span>
+        <button id="logout-btn" class="px-4 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 transition text-sm ml-2">Logout</button>
+      `;
+
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        sessionStorage.removeItem('loggedInUser');
+        window.location.href = 'login.html';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

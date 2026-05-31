@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediloc - Medicine Search</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Search Medicines & Shops</h1>
+
+  <!-- Search Box -->
+  <input type="text" id="searchInput" placeholder="Search medicine or shop..." 
+    class="w-full max-w-lg p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6">
+
+  <!-- Results Container -->
+  <div id="results" class="w-full max-w-4xl space-y-4"></div>
+
+  <script>
+    // Sample data (replace with database data later)
+    const data = [
+      {
+        shop: "MediCare Pharmacy",
+        medicine: "Paracetamol",
+        price: "₹50",
+        use: "Fever & pain relief",
+        pros: "Effective, widely available",
+        cons: "Overuse can harm liver"
+      },
+      {
+        shop: "HealthPlus",
+        medicine: "Ibuprofen",
+        price: "₹80",
+        use: "Inflammation & pain relief",
+        pros: "Reduces inflammation",
+        cons: "Can cause stomach upset"
+      },
+      {
+        shop: "MediCare Pharmacy",
+        medicine: "Vitamin C",
+        price: "₹120",
+        use: "Boosts immunity",
+        pros: "Safe for daily use",
+        cons: "Excess can cause diarrhea"
+      }
+    ];
+
+    const searchInput = document.getElementById("searchInput");
+    const resultsDiv = document.getElementById("results");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      resultsDiv.innerHTML = "";
+
+      const filtered = data.filter(item => 
+        item.shop.toLowerCase().includes(query) || item.medicine.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = `<p class="text-gray-500 text-center">No results found</p>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-200";
+
+        card.innerHTML = `
+          <h2 class="text-xl font-semibold text-blue-600">${item.medicine}</h2>
+          <p class="text-gray-700"><strong>Shop:</strong> ${item.shop}</p>
+          <p class="text-gray-700"><strong>Price:</strong> ${item.price}</p>
+          <p class="text-gray-700"><strong>Use:</strong> ${item.use}</p>
+          <p class="text-gray-700"><strong>Pros:</strong> ${item.pros}</p>
+          <p class="text-gray-700"><strong>Cons:</strong> ${item.cons}</p>
+        `;
+        resultsDiv.appendChild(card);
+      });
+    });
+  </script>
+
+</body>
+</html>

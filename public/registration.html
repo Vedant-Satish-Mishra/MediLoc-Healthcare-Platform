@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediLoc Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; } /* Removed overflow: hidden to ensure AOS works if content overflows on small screens */
+    #background-image {
+      position: fixed; left: 0; top: 0; width: 100%; height: 100vh;
+      object-fit: cover; z-index: -1;
+      filter: blur(4px) brightness(1.05);
+    }
+    .pattern-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+      background-size: 10px 10px; z-index: -1;
+    }
+    .input-wrapper { position: relative; }
+    .input-icon {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 18px;
+    }
+    .input-field {
+      background-color: #f9fafb;
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .input-field:focus {
+      border-color: #6366f1; outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    .valid { color: green; }
+    .invalid { color: red; }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <img id="background-image" src="main_bg.jpg" alt="Background" 
+       onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/f3f4f6/374151?text=Background';">
+  <div class="pattern-overlay"></div>
+
+  <div class="min-h-screen flex flex-col items-center justify-center p-4 ">
+    <div class="w-full max-w-2xl bg-white/25 backdrop-blur-xl rounded-2xl shadow-xl p-8 md:p-12" data-aos="zoom-in-up" data-aos-duration="600">
+      
+      <div class="flex justify-center mb-6" data-aos="zoom-in" data-aos-delay="300">
+        <a href="index.html"><img src="logo_name.png" alt="MediLoc Logo" class="w-40 h-40 "></a>
+      </div>
+
+      <h2 class="text-center text-3xl font-bold text-gray-900 mb-2" data-aos="fade-up" data-aos-delay="400">Create Your Account</h2>
+      <p class="text-center text-gray-600 mb-6" data-aos="fade-up" data-aos-delay="500">Select your role and fill details</p>
+
+      <div class="grid grid-cols-2 gap-4 mb-6" data-aos="fade-up" data-aos-delay="600">
+        <button type="button" id="btn-customer"
+          class="role-btn w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+          Customer
+        </button>
+        <button type="button" id="btn-owner"
+          class="role-btn w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+          Owner
+        </button>
+      </div>
+
+      <form id="registerForm" class="space-y-4">
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="700">
+          <input type="text" name="fullname" placeholder="Full Name" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-fullname"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="750">
+          <input type="email" name="email" placeholder="Email Address" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-email"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="800">
+          <input type="tel" name="phone" placeholder="Phone Number" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-phone"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="850">
+          <input type="password" name="password" placeholder="Password" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-password"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="900">
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-confirm"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="950">
+          <input type="text" name="address" placeholder="Full Address" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-address"></span>
+        </div>
+        <div class="input-wrapper" data-aos="fade-up" data-aos-delay="1000">
+          <input type="number" name="pincode" placeholder="Pincode" required class="px-4 py-3 rounded-lg input-field">
+          <span class="input-icon" id="icon-pincode"></span>
+        </div>
+
+        <div id="ownerFields" class="hidden space-y-4">
+          <div class="input-wrapper">
+            <input type="text" name="shopName" placeholder="Pharmacy/Shop Name" class="px-4 py-3 rounded-lg input-field">
+            <span class="input-icon" id="icon-shop"></span>
+          </div>
+          <div class="input-wrapper">
+            <input type="text" name="license" placeholder="Drug License Number" class="px-4 py-3 rounded-lg input-field">
+            <span class="input-icon" id="icon-license"></span>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition" data-aos="fade-up" data-aos-delay="1050">
+          Register
+        </button>
+      </form>
+
+      <p class="text-center text-gray-500 mt-6" data-aos="fade-in" data-aos-delay="1150">
+        Already have an account? 
+        <a href="login.html" class="text-indigo-600 font-semibold hover:underline">Login</a>
+      </p>
+    </div>
+
+    <footer class="text-center mt-6">
+      <p class="text-gray-500 text-sm">Powered by MediLoc</p>
+    </footer>
+  </div>
+<script>
+    const btnCustomer = document.getElementById('btn-customer');
+    const btnOwner = document.getElementById('btn-owner');
+    const ownerFields = document.getElementById('ownerFields');
+    const form = document.getElementById('registerForm');
+    let role = "customer"; // Default role
+
+    btnCustomer.addEventListener('click', () => {
+      role = "customer";
+      btnCustomer.classList.add('bg-indigo-600', 'text-white');
+      btnCustomer.classList.remove('bg-gray-200', 'text-gray-800');
+      btnOwner.classList.add('bg-gray-200', 'text-gray-800');
+      btnOwner.classList.remove('bg-indigo-600', 'text-white');
+      ownerFields.classList.add('hidden');
+    });
+
+    btnOwner.addEventListener('click', () => {
+      role = "owner";
+      btnOwner.classList.add('bg-indigo-600', 'text-white');
+      btnOwner.classList.remove('bg-gray-200', 'text-gray-800');
+      btnCustomer.classList.add('bg-gray-200', 'text-gray-800');
+      btnCustomer.classList.remove('bg-indigo-600', 'text-white');
+      ownerFields.classList.remove('hidden');
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      data.role = role; // Add selected role to the data
+
+      if (data.password !== data.confirmPassword) {
+        alert("❌ Error: Passwords do not match!");
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("✅ Registration Successful! You can now login.");
+          window.location.href = 'login.html'; // Redirect to login page
+        } else {
+          alert(`❌ Error: ${result.message}`);
+        }
+      } catch (error) {
+        console.error('Submission Error:', error);
+        alert('❌ An error occurred. Please try again.');
+      }
+    });
+  </script>
+  
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-sine',
+      mirror: true,
+      offset: 100,
+    });
+  </script>
+</body>
+</html>
