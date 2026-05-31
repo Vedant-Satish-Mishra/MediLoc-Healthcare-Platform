@@ -136,7 +136,7 @@ MEDILOC/
 
 ## 📝 Owner Registration
 
-![Owner Registration](screenshot/owner%20registration.png)
+![Owner Registration](screenshot/owner%20ragistration.png)
 
 ---
 
